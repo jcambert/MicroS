@@ -1,0 +1,32 @@
+version: "3.5"
+
+services:
+  firebird:
+    image: jacobalberty/firebird
+    container_name: firebird
+    ports:
+      - 3050:3050
+    volumes:
+      - firebird:/firebird/data
+    environment:
+      ISC_PASSWORD: korben90
+      FIREBIRD_DATABASE: weerp
+      FIREBIRD_USER: jcambert
+      FIREBIRD_PASSWORD: korben90
+    networks:
+      - micros
+  firebirdui:
+    image: marianaldenhoevel/firebirdwebadmin
+    container_name: firebirdui
+    ports:
+      - 3500:80
+    depends_on:
+      - firebird
+    networks:
+      - micros
+volumes:
+  firebird:
+networks:
+  micros:
+    name: micros-network
+    external: true
