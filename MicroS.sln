@@ -5,12 +5,18 @@ VisualStudioVersion = 16.0.29209.152
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "compose", "compose", "{F5EAC665-D16E-41FC-B3CE-6961698B3004}"
 	ProjectSection(SolutionItems) = preProject
+		compose\consul-fabio-vault.yml = compose\consul-fabio-vault.yml
+		compose\firebird.yml = compose\firebird.yml
 		compose\mongo-rabbit-redis.yml = compose\mongo-rabbit-redis.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{ADF61B56-B70D-4432-8B0F-FD64A03D795F}"
 	ProjectSection(SolutionItems) = preProject
+		scripts\start-all.cmd = scripts\start-all.cmd
+		scripts\start-consul-fabio-vault.cmd = scripts\start-consul-fabio-vault.cmd
 		scripts\start-mongo-rabbit-redis.cmd = scripts\start-mongo-rabbit-redis.cmd
+		scripts\stop-all.cmd = scripts\stop-all.cmd
+		scripts\stop-consul-fabio-vault.cmd = scripts\stop-consul-fabio-vault.cmd
 		scripts\stop-mongo-rabbit-redis.cmd = scripts\stop-mongo-rabbit-redis.cmd
 	EndProjectSection
 EndProject
