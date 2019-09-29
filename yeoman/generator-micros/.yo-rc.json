@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Ambert Jean-Christophe",
+      "authorEmail": "jc.ambert@free.fr",
+      "authorUrl": "http://jc.ambert.free.fr"
+    }
+  }
+}
