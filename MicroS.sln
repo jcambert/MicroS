@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "compose", "compose", "{F5EA
 		compose\consul-fabio-vault.yml = compose\consul-fabio-vault.yml
 		compose\firebird.yml = compose\firebird.yml
 		compose\mongo-rabbit-redis.yml = compose\mongo-rabbit-redis.yml
+		compose\vscode.yml = compose\vscode.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{ADF61B56-B70D-4432-8B0F-FD64A03D795F}"
