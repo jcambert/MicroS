@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{ADF6
 		scripts\start-all.cmd = scripts\start-all.cmd
 		scripts\start-consul-fabio-vault.cmd = scripts\start-consul-fabio-vault.cmd
 		scripts\start-mongo-rabbit-redis.cmd = scripts\start-mongo-rabbit-redis.cmd
+		scripts\start-vscode.cmd = scripts\start-vscode.cmd
 		scripts\stop-all.cmd = scripts\stop-all.cmd
 		scripts\stop-consul-fabio-vault.cmd = scripts\stop-consul-fabio-vault.cmd
 		scripts\stop-mongo-rabbit-redis.cmd = scripts\stop-mongo-rabbit-redis.cmd
