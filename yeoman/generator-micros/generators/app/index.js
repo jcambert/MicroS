@@ -1,38 +1,50 @@
-'use strict';
-const Generator = require('yeoman-generator');
-const chalk = require('chalk');
-const yosay = require('yosay');
+"use strict";
+const Generator = require("yeoman-generator");
+const chalk = require("chalk");
+const yosay = require("yosay");
 
 module.exports = class extends Generator {
-  prompting() {
-    // Have Yeoman greet the user.
+  constructor(arg, opt) {
+    super(arg, opt);
+    
+  }
+  initializing() {
+    this.composeWith(require.resolve('../create-domain'));
+    this.composeWith(require.resolve('../create-handler'));
+    this.config.delete("promptValues");
+    this.answers = {};
+  }
+  async prompting() {
     this.log(
-      yosay(`Welcome to the rad ${chalk.red('generator-micros')} generator!`)
+      yosay(`Welcome to the rad ${chalk.red("generator-micros")} generator!`)
     );
 
-    const prompts = [
+    this.answers = await this.prompt([
       {
-        type: 'confirm',
-        name: 'someAnswer',
-        message: 'Would you like to enable this option?',
-        default: true
+        type: "input",
+        name: "name",
+        message: "Domain Name:",
+        default: "cotation",
+        store: true
+      },
+      {
+        type: "confirm",
+        name: "deletecache",
+        message: "Supprimer le cache:",
+        default: "Y",
       }
-    ];
-
-    return this.prompt(prompts).then(props => {
-      // To access props later use this.props.someAnswer;
-      this.props = props;
-    });
+    ]);
+    //this.log("Handler Name:", this.answers.name);
+  }
+  writing(){
+    this.log("MicroS writing");
   }
 
-  writing() {
-    this.fs.copy(
-      this.templatePath('dummyfile.txt'),
-      this.destinationPath('dummyfile.txt')
-    );
-  }
-
-  install() {
-    this.installDependencies();
+  end(){
+    if(this.deletecache)
+      this.config.delete("promptValues")
   }
 };
+
+
+
