@@ -2,7 +2,6 @@ const Generator = require("yeoman-generator");
 const chalk = require("chalk");
 var changeCase = require('change-case');
 var glob = require("glob");
-var infos =require("../../info");
 module.exports = class extends Generator {
     constructor(args, opt) {
         super(args, opt);
@@ -11,7 +10,7 @@ module.exports = class extends Generator {
         this.author = {};
         this.indomain = false;
         this.namespace = "unknown";
-        this.config.delete("promptValues");
+        //this.config.delete("promptValues");
         var self = this;
         glob("*.api.csproj", { cwd: process.cwd() }, function (er, files) {
             self.indomain = files.length == 1;
@@ -65,22 +64,24 @@ module.exports = class extends Generator {
         }
         this.log("Create Api controller");
 
+        var opts=  { changeCase: changeCase, name: this.answers.name, namespace: this.namespace, author: this.author };
+
         this.fs.copyTpl(
             this.templatePath("AuthAdminAttribue.cs"),
             this.destinationPath("Framework/AdminAuth.cs"),
-            { changeCase: changeCase, name: this.answers.name, namespace: this.namespace, author: this.author },
+            opts,
             {overwrite:false}
         );
 
         this.fs.copyTpl(
             this.templatePath("ApiController.cs"),
             this.destinationPath("Controllers/" + changeCase.titleCase(this.answers.name) + "sControllerGen.cs"),
-            { changeCase: changeCase, name: this.answers.name, namespace: this.namespace, author: this.author }
+            opts,
         );
         this.fs.copyTpl(
             this.templatePath("IApiService.cs"),
             this.destinationPath("Services/I" + changeCase.titleCase(this.answers.name) + "sServiceGen.cs"),
-            { changeCase: changeCase, name: this.answers.name, namespace: this.namespace, author: this.author }
+            opts
         
         );
     }
