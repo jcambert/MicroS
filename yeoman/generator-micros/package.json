@@ -1,6 +1,6 @@
 {
   "name": "generator-micros",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Generator For MicroS architecture",
   "homepage": "https://github.com/jcambert/MicroS",
   "author": {
@@ -35,6 +35,7 @@
     "chalk": "^2.1.0",
     "change-case": "^3.1.0",
     "glob": "^7.1.5",
+    "read-package-json": "^2.1.0",
     "yeoman-generator": "^2.0.1",
     "yosay": "^2.0.1"
   },

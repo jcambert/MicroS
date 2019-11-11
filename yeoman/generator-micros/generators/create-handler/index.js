@@ -1,5 +1,5 @@
 const Generator = require("yeoman-generator");
-var changeCase = require('change-case')
+var changeCase = require('change-case');
 module.exports = class extends Generator {
     constructor(args, opt) {
         super(args, opt);
