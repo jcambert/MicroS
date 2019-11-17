@@ -1,3 +1,3 @@
 cd ..
-docker-compose -f ./compose/mongo-rabbit-redis.yml -f ./compose/vscode.yml up -d
+docker-compose -f ./compose/mongo-rabbit-redis.yml  up -d
 pause
