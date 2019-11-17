@@ -1,12 +1,12 @@
 using MicroS_Common.Messages;
 using System;
 
-namespace <%=namespace%>.domain.<%= changeCase.titleCase(name)%>s.Messages.Events
+namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Messages.Events
 {
     [MessageNamespace("<%= changeCase.lowerCase(name)%>s")]
-    public class <%= changeCase.titleCase(name)%>BaseRejectedEvent : BaseRejectedEvent
+    public class <%= changeCase.pascalCase(name)%>BaseRejectedEvent : BaseRejectedEvent
     {
-        public <%= changeCase.titleCase(name)%>BaseRejectedEvent(Guid id, string reason, string code) : base(id, reason, code)
+        public <%= changeCase.pascalCase(name)%>BaseRejectedEvent(Guid id, string reason, string code) : base(id, reason, code)
         {
         }
     }

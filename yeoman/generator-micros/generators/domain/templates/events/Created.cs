@@ -1,19 +1,19 @@
 using System;
 
-namespace <%=namespace%>.domain.<%= changeCase.titleCase(name)%>s.Messages.Events
+namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Messages.Events
 {
-    public class <%= changeCase.titleCase(name)%>Created : <%= changeCase.titleCase(name)%>BaseEvent
+    public class <%= changeCase.pascalCase(name)%>Created : <%= changeCase.pascalCase(name)%>BaseEvent
     {
         public Guid Id { get; }
 
         <%props.forEach(property=>{
-            %>public <%= property.type%>  <%= changeCase.titleCase(property.name)%>{get;}
+            %>public <%= property.type%>  <%= changeCase.pascalCase(property.name)%>{get;}
         <%})%>
 
-        public <%= changeCase.titleCase(name)%>Created(Guid id<%props.forEach(property=>{%>,<%= property.type %> <%= changeCase.lowerCase(property.name) %> <%})%>)
+        public <%= changeCase.pascalCase(name)%>Created(Guid id<%props.forEach(property=>{%>,<%= property.type %> <%= changeCase.lowerCase(property.name) %> <%})%>)
         {
             Id = id;
-            <%props.forEach(property=>{%><%=changeCase.titleCase(property.name) %> = <%= changeCase.lowerCase(property.name) %> ;
+            <%props.forEach(property=>{%><%=changeCase.pascalCase(property.name) %> = <%= changeCase.lowerCase(property.name) %> ;
             <%}) %>
         }
     }

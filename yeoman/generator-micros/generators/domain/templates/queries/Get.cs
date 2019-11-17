@@ -1,11 +1,16 @@
 using MicroS_Common.Types;
 using System;
-using <%=namespace%>.domain.<%= changeCase.titleCase(name)%>s.Dto;
+using <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Dto;
 
-namespace <%=namespace%>.domain.<%= changeCase.titleCase(name)%>s.Queries
+namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Queries
 {
-    public class Get<%= changeCase.titleCase(name)%> : IQuery<<%= changeCase.titleCase(name)%>Dto>
+    public class Get<%= changeCase.pascalCase(name)%> : IQuery<<%= changeCase.pascalCase(name)%>Dto>
     {
-        public Guid Id { get; set; }
+        #region public properties
+        <%if(base_entity){%>
+            public Guid Id { get; set; }
+        <% } %>
+        #endregion
+        
     }
 }

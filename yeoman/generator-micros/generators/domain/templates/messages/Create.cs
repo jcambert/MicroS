@@ -1,22 +1,25 @@
 using System;
 
-namespace <%=namespace%>.domain.<%= changeCase.titleCase(name)%>s.Messages.Commands
+namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Messages.Commands
 {
 
-    public class Create<%= changeCase.titleCase(name)%> : <%= changeCase.titleCase(name)%>BaseCommand
+    public class Create<%= changeCase.pascalCase(name)%> : <%= changeCase.pascalCase(name)%>BaseCommand
     {
+        <%if(base_entity){%>
         public override Guid Id { get; set; }
-
+        <%}%>
         <%props.forEach(property=>{
-            %>public <%= property.type%>  <%= changeCase.titleCase(property.name)%>{get;}
+            %>public <%= property.type%>  <%= changeCase.pascalCase(property.name)%>{get;}
         <%})%>
 
 
 
-        public Create<%= changeCase.titleCase(name)%>(Guid id<%props.forEach(property=>{%>,<%=property.type%> <%=changeCase.lowerCase( property.name)%> <%})%>) : base()
+        public Create<%= changeCase.pascalCase(name)%>(<%if(base_entity){%>Guid id<%}%><%props.forEach(property=>{%>,<%=property.type%> <%=changeCase.lowerCase( property.name)%> <%})%>) : base()
         {
+            <%if(base_entity){%>
             Id = id;
-            <%props.forEach(property=>{%><%=changeCase.titleCase(property.name) %> = <%= changeCase.lowerCase(property.name) %> ;
+            <%}%>
+            <%props.forEach(property=>{%><%=changeCase.pascalCase(property.name) %> = <%= changeCase.lowerCase(property.name) %> ;
             <%}) %>
         }
     }

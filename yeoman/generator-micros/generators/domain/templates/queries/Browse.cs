@@ -1,9 +1,9 @@
 using MicroS_Common.Types;
-using <%=namespace%>.domain.<%= changeCase.titleCase(name)%>s.Dto;
+using <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Dto;
 
-namespace <%=namespace%>.domain.<%= changeCase.titleCase(name)%>s.Queries
+namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Queries
 {
-    public class Browse<%= changeCase.titleCase(name)%>s : PagedQueryBase, IQuery<PagedResult<<%= changeCase.titleCase(name)%>Dto>>
+    public class Browse<%= changeCase.pascalCase(name)%>s : PagedQueryBase, IQuery<PagedResult<<%= changeCase.pascalCase(name)%>Dto>>
     {
     }
 }
