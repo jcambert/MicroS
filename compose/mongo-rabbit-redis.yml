@@ -19,7 +19,7 @@ services:
     depends_on: 
       - mongo
     ports:
-      - 3000:3000
+      - 27018:3000
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
