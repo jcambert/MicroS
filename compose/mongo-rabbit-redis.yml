@@ -10,7 +10,7 @@ services:
       - micros
     # network_mode: host
     volumes:
-      - mongo:/data/db
+      - mongo:/data/db/mongo
     depends_on: 
       - portainer
   mongo-client:
