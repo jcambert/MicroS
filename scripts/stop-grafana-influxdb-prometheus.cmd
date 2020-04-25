@@ -1,2 +1,2 @@
 cd ..
-docker-compose -f ./compose/grafana-influxdb-prometheus.yml down
+docker-compose -f ./compose/grafana-influxdb-prometheus.yml down --remove-orphans
