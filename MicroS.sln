@@ -7,7 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "compose", "compose", "{F5EA
 	ProjectSection(SolutionItems) = preProject
 		compose\consul-fabio-vault.yml = compose\consul-fabio-vault.yml
 		compose\firebird.yml = compose\firebird.yml
+		compose\grafana-influxdb-prometheus.yml = compose\grafana-influxdb-prometheus.yml
+		compose\jasper.yml = compose\jasper.yml
 		compose\mongo-rabbit-redis.yml = compose\mongo-rabbit-redis.yml
+		compose\prometheus.yml = compose\prometheus.yml
 		compose\vscode.yml = compose\vscode.yml
 	EndProjectSection
 EndProject

@@ -21,11 +21,12 @@ scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: ['prometheus:9090']
-
-  - job_name: 'api'
-    static_configs:
-      - targets: ['host.docker.internal:8000']
-
-  - job_name: 'spid-service'
+  - job_name: 'weeping-app'
     static_configs:
       - targets: ['host.docker.internal:5000']
+  - job_name: 'weeping-api'
+    static_configs:
+      - targets: ['host.docker.internal:5002']
+  - job_name: 'weeping-spid'
+    static_configs:
+      - targets: ['host.docker.internal:5004']

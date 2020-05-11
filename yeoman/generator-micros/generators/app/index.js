@@ -2,29 +2,34 @@
 const Generator = require("yeoman-generator");
 const chalk = require("chalk");
 const yosay = require("yosay");
-const info = require("./info");
+const info = require(require.resolve("../../info"));
+const path = require('path');
 module.exports = class extends Generator {
   constructor(arg, opt) {
     super(arg, opt);
-    
+
   }
   initializing() {
-    
 
-    this.composeWith(require.resolve('../create-domain'));
-    this.composeWith(require.resolve('../create-handler'));
+
+    this.composeWith(require.resolve('../domain'));
+    this.composeWith(require.resolve('../handler'));
     this.config.delete("promptValues");
-    this.answers = {};
-    info.then(datas=>{
-      this.answers.datas=datas;
-    });
+    this.config.set({ "runInMainGenerator": true });
+    this.config.save();
+    this.answers = {
+      deletecache: true
+
+    };
+
   }
   async prompting() {
     this.log(
-      yosay(`Welcome to the rad ${chalk.red("generator-micros")} generator!`)
+      yosay(`Welcome to the ${chalk.red("generator-micros")} generator!`)
     );
 
-    this.answers = Object.assign({},this.answers, await this.prompt([
+    this.answers = Object.assign({}, this.answers, await this.prompt([
+
       {
         type: "input",
         name: "name",
@@ -32,25 +37,13 @@ module.exports = class extends Generator {
         default: "",
         store: true
       },
-      {
-        type: "confirm",
-        name: "deletecache",
-        message: "Supprimer le cache:",
-        default: "Y",
-      }
     ])
     );
-    //this.log("Handler Name:", this.answers.name);
-  }
-  writing(){
-    this.log("MicroS writing");
   }
 
-  end(){
-    if(this.deletecache)
-      this.config.delete("promptValues")
+
+  end() {
+    this.config.delete("promptValues");
   }
-};
 
-
-
+}

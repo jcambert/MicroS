@@ -13,8 +13,7 @@
   ],
   "main": "generators/index.js",
   "keywords": [
-    "",
-    "yeoman-generator"
+    "micros-generator"
   ],
   "devDependencies": {
     "yeoman-test": "^1.7.0",
@@ -35,6 +34,8 @@
     "chalk": "^2.1.0",
     "change-case": "^3.1.0",
     "glob": "^7.1.5",
+    "glob-promise": "^3.4.0",
+    "inquirer-search-list": "^1.2.6",
     "read-package-json": "^2.1.0",
     "yeoman-generator": "^2.0.1",
     "yosay": "^2.0.1"
