@@ -1,0 +1,1 @@
+<%- props.filter(prop=> prop.isprimitive).map(prop=>`${changeCase.pascalCase(prop.name)} =${changeCase.lowerCase(prop.name)}; `).join('\n') %>

@@ -1,0 +1,1 @@
+<%- props.filter(prop=>prop.isprimitive).map(prop=>`public ${prop.type} ${prop.name} {get;set;}`).join('\n') %>

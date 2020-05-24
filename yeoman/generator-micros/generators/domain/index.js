@@ -18,7 +18,8 @@ module.exports = class extends Generator {
         self.namespace = "unknown";
         self.answers = {};
         self.configok = false;
-        self.log(chalk.green("initializing"));
+        //self.log(chalk.green("initializing"));
+       
         var files = await glob("**/*.domain.csproj", { cwd: process.cwd() });
 
         if (files.length == 0) {
@@ -73,7 +74,7 @@ module.exports = class extends Generator {
                 name: "mongo",
                 message: "Using Mongo as Database",
                 default: true,
-                when:function(answer){return !answer.subdoc}
+                //when:function(answer){return !answer.subdoc}
             }
         ];
         
@@ -84,7 +85,8 @@ module.exports = class extends Generator {
                 type: "input",
                 name: "name",
                 message: "Domain Name:",
-                default: ""
+                default: "",
+                filter:input=>changeCase.pascalCase(input.trim())
             });
 
         } else {
@@ -100,7 +102,9 @@ module.exports = class extends Generator {
             type: 'input',
             name: 'attributeName',
             message: 'Define your Domain - Property Name?',
-            default: 'ID'
+            default: 'ID',
+            filter:input=>changeCase.pascalCase(input),
+            validate:input=>self.props.filter(prop=>prop.name==input).some(e=>true)?`the property ${input} is already defined` : true
         }, {
             type: 'search-list',
             choices: self.primitiveTypes,
@@ -120,7 +124,8 @@ module.exports = class extends Generator {
             when: function (answer) {
                 answer.isprimitive = self.primitiveTypes.indexOf(answer.attributeType) < (self.primitiveTypes.length - 1);
                 return !answer.isprimitive;
-            }
+            },
+            filter:input=>changeCase.pascalCase(input)
         },
         {
             type: 'confirm',
@@ -133,6 +138,7 @@ module.exports = class extends Generator {
         const loop = async (relevantPrompts) => {
             var resp = await this.prompt(relevantPrompts);
             self.props.push({ name: resp.attributeName, type: resp.attributeType, isprimitive: resp.isprimitive });
+           
             //self.log(chalk.green(self.props));
             if (resp.repeat)
                 await loop(columnPrompts);
@@ -140,7 +146,7 @@ module.exports = class extends Generator {
 
         await loop(columnPrompts)
 
-        this.config.set({ "domain": this.props });
+        this.config.set({ "domain": this.props ,subdoc:resp.subdoc});
         this.config.save();
 
 
@@ -173,29 +179,29 @@ module.exports = class extends Generator {
         var self = this;
         // return;
         var tpls = [
-            ["domain.cs", changeCase.pascalCase(this.answers.name) + "s/Domain/" + changeCase.pascalCase(this.answers.name) + ".cs"],
-            ["dto.cs", changeCase.pascalCase(this.answers.name) + "s/Dto/" + changeCase.pascalCase(this.answers.name) + "Dto.cs"],
+            ["domain.cs", this.answers.name + "s/Domain/" + this.answers.name + ".cs"],
+            ["dto.cs", this.answers.name + "s/Dto/" +this.answers.name + "Dto.cs"],
             
-            ["Profile.cs", changeCase.pascalCase(this.answers.name) + "s/Mapping/" + changeCase.pascalCase(this.answers.name) + "Profile.cs"]
+            ["Profile.cs", this.answers.name + "s/Mapping/" + this.answers.name+ "Profile.cs"]
         ];
         var notSubDoc=[
-            ["queries/Browse.cs", changeCase.pascalCase(this.answers.name) + "s/Queries/Browse" + changeCase.pascalCase(this.answers.name) + ".cs"],
-            ["queries/Get.cs", changeCase.pascalCase(this.answers.name) + "s/Queries/Get" + changeCase.pascalCase(this.answers.name) + ".cs"],
+            ["queries/Browse.cs", this.answers.name + "s/Queries/Browse" + this.answers.name + ".cs"],
+            ["queries/Get.cs", this.answers.name + "s/Queries/Get" + this.answers.name + ".cs"],
         ]
 
         var cruds = [
-            ["messages/BaseCommand.cs", changeCase.pascalCase(this.answers.name) + "s/Messages/Commands/" + changeCase.pascalCase(this.answers.name) + "BaseCommand.cs"],
-            ["messages/Create.cs", changeCase.pascalCase(this.answers.name) + "s/Messages/Commands/Create" + changeCase.pascalCase(this.answers.name) + ".cs"],
-            ["messages/Delete.cs", changeCase.pascalCase(this.answers.name) + "s/Messages/Commands/Delete" + changeCase.pascalCase(this.answers.name) + ".cs"],
-            ["messages/Update.cs", changeCase.pascalCase(this.answers.name) + "s/Messages/Commands/Update" + changeCase.pascalCase(this.answers.name) + ".cs"],
-            ["events/BaseEvent.cs", changeCase.pascalCase(this.answers.name) + "s/Messages/Events/" + changeCase.pascalCase(this.answers.name) + "BaseEvent.cs"],
-            ["events/Created.cs", changeCase.pascalCase(this.answers.name) + "s/Messages/Events/" + changeCase.pascalCase(this.answers.name) + "Created.cs"],
-            ["events/Updated.cs", changeCase.pascalCase(this.answers.name) + "s/Messages/Events/" + changeCase.pascalCase(this.answers.name) + "Updated.cs"],
-            ["events/Deleted.cs", changeCase.pascalCase(this.answers.name) + "s/Messages/Events/" + changeCase.pascalCase(this.answers.name) + "Deleted.cs"],
-            ["events/BaseRejected.cs", changeCase.pascalCase(this.answers.name) + "s/Messages/Events/" + changeCase.pascalCase(this.answers.name) + "BaseRejectedEvent.cs"],
-            ["events/CreateRejected.cs", changeCase.pascalCase(this.answers.name) + "s/Messages/Events/Create" + changeCase.pascalCase(this.answers.name) + "Rejected.cs"],
-            ["events/UpdateRejected.cs", changeCase.pascalCase(this.answers.name) + "s/Messages/Events/Update" + changeCase.pascalCase(this.answers.name) + "Rejected.cs"],
-            ["events/DeleteRejected.cs", changeCase.pascalCase(this.answers.name) + "s/Messages/Events/Delete" + changeCase.pascalCase(this.answers.name) + "Rejected.cs"],
+            ["messages/BaseCommand.cs", this.answers.name + "s/Messages/Commands/" + this.answers.name + "BaseCommand.cs"],
+            ["messages/Create.cs", this.answers.name + "s/Messages/Commands/Create" + this.answers.name + ".cs"],
+            ["messages/Delete.cs", this.answers.name + "s/Messages/Commands/Delete" + this.answers.name + ".cs"],
+            ["messages/Update.cs", this.answers.name + "s/Messages/Commands/Update" + this.answers.name + ".cs"],
+            ["events/BaseEvent.cs", this.answers.name + "s/Messages/Events/" + this.answers.name + "BaseEvent.cs"],
+            ["events/Created.cs", this.answers.name + "s/Messages/Events/" + this.answers.name + "Created.cs"],
+            ["events/Updated.cs", this.answers.name + "s/Messages/Events/" + this.answers.name + "Updated.cs"],
+            ["events/Deleted.cs", this.answers.name + "s/Messages/Events/" + this.answers.name + "Deleted.cs"],
+            ["events/BaseRejected.cs", this.answers.name+ "s/Messages/Events/" + this.answers.name + "BaseRejectedEvent.cs"],
+            ["events/CreateRejected.cs", this.answers.name + "s/Messages/Events/Create" + this.answers.name + "Rejected.cs"],
+            ["events/UpdateRejected.cs", this.answers.name + "s/Messages/Events/Update" + this.answers.name + "Rejected.cs"],
+            ["events/DeleteRejected.cs", this.answers.name + "s/Messages/Events/Delete" + this.answers.name + "Rejected.cs"],
         ];
         if(!this.answers.subdoc)
             tpls = tpls.concat(notSubDoc);

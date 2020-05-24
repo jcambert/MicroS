@@ -11,7 +11,7 @@ using <%=namespace%>.domain.<%=property.name%>s.Domain;
 /// </summary>
 namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name) %>s.Dto
 {
-    public class <%= changeCase.pascalCase(name) %>Dto
+    public partial class <%= changeCase.pascalCase(name) %>Dto
     {
 
         #region private variables

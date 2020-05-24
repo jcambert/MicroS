@@ -1,0 +1,4 @@
+<% if(props.filter(prop=>!prop.isprimitive).some(e=>true)){%>
+using System.Collections.Generic;
+<%- props.filter(prop=>!prop.isprimitive).map(prop=>`using ${namespace}.domain.${changeCase.pascalCase(prop.name)}s.Domain;`).join('\n')%>
+<%}%>

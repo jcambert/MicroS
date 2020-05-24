@@ -15,7 +15,9 @@ module.exports = class extends Generator {
         self.namespace = "unknown";
         self.answers = {};
         self.configok=false;
-        self.log(chalk.green("initializing"));
+        //self.log(chalk.green("initializing"));
+        var prompts = self.config.get("promptValues");
+        if (prompts && prompts.subdoc) return;
         var files = await glob("**/*.Services.*/*.csproj", { cwd: process.cwd() });
 
         if (files.length == 0) {
@@ -99,7 +101,8 @@ module.exports = class extends Generator {
             ["controllers/controller.cs","Controllers/" + changeCase.titleCase(this.answers.name) + "ControllerGen.cs"]
 
         ];
-        
+
+
         tpls.forEach(tpl=>{
             this._writing(tpl[0],path.join(self.servicePath, tpl[1]))
         })

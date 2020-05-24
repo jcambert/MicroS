@@ -1,0 +1,27 @@
+version: "3.5"
+volumes:
+  jasperserver:
+    driver: local
+services:
+  jasperserver-db:
+    image: mariadb
+    container_name: jasper-db
+    volumes:
+        #- /etc/localtime:/etc/localtime:ro
+      - /var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=!Je9018@
+    restart: always
+  jasperserver:
+    build:
+      context: ./
+    container_name: jasper-report
+    ports:
+      - "8181:8080"
+
+    links:
+      - jasperserver-db:jasper.db
+    environment:
+      - JS_DB_HOST=jasper.db
+      - JS_DB_USER=root
+      - JS_DB_PASSWORD=!Je9018@

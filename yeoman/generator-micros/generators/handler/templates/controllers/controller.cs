@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using MicroS_Common.Types;
 using MicroS_Common.Controllers;
 using MicroS_Common.Dispatchers;
@@ -20,7 +21,7 @@ namespace <%=namespace%>.Services.<%= changeCase.pascalCase(name) %>s.Controller
     [Route("<%= changeCase.lowerCase(name) %>s")]
     public partial class <%= changeCase.pascalCase(name) %>sController : BaseController
     {
-        public <%= changeCase.pascalCase(name) %>sController(IDispatcher dispatcher) : base(dispatcher)
+        public <%= changeCase.pascalCase(name) %>sController(IDispatcher dispatcher,IConfiguration config) : base(dispatcher,config)
         {
         }
 

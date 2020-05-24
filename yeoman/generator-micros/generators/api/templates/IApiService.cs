@@ -1,4 +1,5 @@
 using MicroS_Common.Types;
+using MicroS_Common.RestEase;
 using RestEase;
 using System;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace <%=namespace%>.api.Services
     /// <summary>
     /// <%= changeCase.titleCase(name) %> Service created by <see cref="https://www.nuget.org/packages/RestEase/">Restease</see>
     /// </summary>
+    [ServiceForwarder("<%= changeCase.lowerCase(name) %>s-service")]
     [SerializationMethods(Query = QuerySerializationMethod.Serialized)]
     public partial interface I<%= changeCase.titleCase(name) %>sService
     {

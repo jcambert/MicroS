@@ -1,0 +1,3 @@
+<%-
+props.filter(prop=>prop.isprimitive).map(prop=>`${prop.type} ${changeCase.lowerCase( prop.name)}`).concat(props.filter(prop=>!prop.isprimitive).map(prop=>`List<${prop.name}> ${changeCase.lowerCase( prop.name)}s`)).join(',');
+%>
