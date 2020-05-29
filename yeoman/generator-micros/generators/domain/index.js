@@ -4,10 +4,12 @@ const changeCase = require('change-case');
 var glob = require("glob-promise");
 const path = require('path');
 var info = require("../../info");
+
+
 module.exports = class extends Generator {
     constructor(args, opt) {
         super(args, opt);
-
+      
 
     }
 
@@ -18,22 +20,29 @@ module.exports = class extends Generator {
         self.namespace = "unknown";
         self.answers = {};
         self.configok = false;
-        //self.log(chalk.green("initializing"));
-       
-        var files = await glob("**/*.domain.csproj", { cwd: process.cwd() });
+        self.log(chalk.green("initializing Domain"));
+        self.log(this.options.namespace);
+        self.config.set("toto","titi");
+        self.log(chalk.green(self.config.get("toto")));
+        self.log(self.config.get("domain").name);
+        if (self.config.get("domain") === undefined) {
+            var files = await glob("**/*.domain.csproj", { cwd: process.cwd() });
 
-        if (files.length == 0) {
-            self.log(chalk.red("There is no Domain project available"));
-            return;
-        } else if (files.length == 1) {
-            var file = files[0];
+            if (files.length == 0) {
+                self.log(chalk.red("There is no Domain project available"));
+                return;
+            } else if (files.length == 1) {
+                var file = files[0];
 
-            self.domainPath = path.join(process.cwd(), path.dirname(file));
-            self.namespace = path.basename(file, path.extname(file)).split(".")[0];
-            self.configok = true;
-        } else {
-            self.log(chalk.red("Mutiple Domain are not allowed at this time"));
-            return;
+                self.domainPath = path.join(process.cwd(), path.dirname(file));
+                self.namespace = path.basename(file, path.extname(file)).split(".")[0];
+                self.configok = true;
+            } else {
+                self.log(chalk.red("Mutiple Domain are not allowed at this time"));
+                return;
+            }
+        }else{
+            self.log(chalk.green(self.config.get("domain").name+" Exist"));
         }
         self.info = await info();
 
@@ -42,7 +51,7 @@ module.exports = class extends Generator {
 
     async prompting() {
         if (!this.configok) {
-            //this.log(chalk.green("Nothing to do here"));
+            this.log(chalk.red("Nothing to do here"));
             return;
         }
         var self = this;
@@ -51,25 +60,25 @@ module.exports = class extends Generator {
         var prompts = self.config.get("promptValues");
         var prompting = [
             {
-                type:"confirm",
-                name:"subdoc",
-                message:"Is Sub Document domain object?",
-                default:false
+                type: "confirm",
+                name: "subdoc",
+                message: "Is Sub Document domain object?",
+                default: false
             },
             {
                 type: "confirm",
                 name: "entity",
                 message: "Is your domain name BaseEntity Derived",
                 default: true,
-                when:function(answer){ return !answer.subdoc}
+                when: function (answer) { return !answer.subdoc }
             },
             {
                 type: "confirm",
                 name: "crud",
                 message: "Crud Handling Enabled (Create,Update,Delete)",
                 default: true,
-                when:function(answer){return !answer.subdoc}
-            },{
+                when: function (answer) { return !answer.subdoc }
+            }, {
                 type: "confirm",
                 name: "mongo",
                 message: "Using Mongo as Database",
@@ -77,7 +86,7 @@ module.exports = class extends Generator {
                 //when:function(answer){return !answer.subdoc}
             }
         ];
-        
+
 
 
         if (!prompts || !prompts.name) {
@@ -86,7 +95,7 @@ module.exports = class extends Generator {
                 name: "name",
                 message: "Domain Name:",
                 default: "",
-                filter:input=>changeCase.pascalCase(input.trim())
+                filter: input => changeCase.pascalCase(input.trim())
             });
 
         } else {
@@ -103,8 +112,8 @@ module.exports = class extends Generator {
             name: 'attributeName',
             message: 'Define your Domain - Property Name?',
             default: 'ID',
-            filter:input=>changeCase.pascalCase(input),
-            validate:input=>self.props.filter(prop=>prop.name==input).some(e=>true)?`the property ${input} is already defined` : true
+            filter: input => changeCase.pascalCase(input),
+            validate: input => self.props.filter(prop => prop.name == input).some(e => true) ? `the property ${input} is already defined` : true
         }, {
             type: 'search-list',
             choices: self.primitiveTypes,
@@ -125,7 +134,7 @@ module.exports = class extends Generator {
                 answer.isprimitive = self.primitiveTypes.indexOf(answer.attributeType) < (self.primitiveTypes.length - 1);
                 return !answer.isprimitive;
             },
-            filter:input=>changeCase.pascalCase(input)
+            filter: input => changeCase.pascalCase(input)
         },
         {
             type: 'confirm',
@@ -138,7 +147,7 @@ module.exports = class extends Generator {
         const loop = async (relevantPrompts) => {
             var resp = await this.prompt(relevantPrompts);
             self.props.push({ name: resp.attributeName, type: resp.attributeType, isprimitive: resp.isprimitive });
-           
+
             //self.log(chalk.green(self.props));
             if (resp.repeat)
                 await loop(columnPrompts);
@@ -146,18 +155,18 @@ module.exports = class extends Generator {
 
         await loop(columnPrompts)
 
-        this.config.set({ "domain": this.props ,subdoc:resp.subdoc});
+        this.config.set({ "domain": this.props, subdoc: resp.subdoc });
         this.config.save();
 
 
     }
     _writing(from, to) {
-        var opts={
+        var opts = {
             changeCase: changeCase,
             name: this.answers.name,
             props: this.props,
             namespace: this.namespace,
-            subdoc:this.answers.subdoc,
+            subdoc: this.answers.subdoc,
             crud: this.answers.crud || false,
             mongo: this.answers.mongo || false,
             base_entity: this.answers.entity || false,
@@ -180,11 +189,11 @@ module.exports = class extends Generator {
         // return;
         var tpls = [
             ["domain.cs", this.answers.name + "s/Domain/" + this.answers.name + ".cs"],
-            ["dto.cs", this.answers.name + "s/Dto/" +this.answers.name + "Dto.cs"],
-            
-            ["Profile.cs", this.answers.name + "s/Mapping/" + this.answers.name+ "Profile.cs"]
+            ["dto.cs", this.answers.name + "s/Dto/" + this.answers.name + "Dto.cs"],
+
+            ["Profile.cs", this.answers.name + "s/Mapping/" + this.answers.name + "Profile.cs"]
         ];
-        var notSubDoc=[
+        var notSubDoc = [
             ["queries/Browse.cs", this.answers.name + "s/Queries/Browse" + this.answers.name + ".cs"],
             ["queries/Get.cs", this.answers.name + "s/Queries/Get" + this.answers.name + ".cs"],
         ]
@@ -198,12 +207,12 @@ module.exports = class extends Generator {
             ["events/Created.cs", this.answers.name + "s/Messages/Events/" + this.answers.name + "Created.cs"],
             ["events/Updated.cs", this.answers.name + "s/Messages/Events/" + this.answers.name + "Updated.cs"],
             ["events/Deleted.cs", this.answers.name + "s/Messages/Events/" + this.answers.name + "Deleted.cs"],
-            ["events/BaseRejected.cs", this.answers.name+ "s/Messages/Events/" + this.answers.name + "BaseRejectedEvent.cs"],
+            ["events/BaseRejected.cs", this.answers.name + "s/Messages/Events/" + this.answers.name + "BaseRejectedEvent.cs"],
             ["events/CreateRejected.cs", this.answers.name + "s/Messages/Events/Create" + this.answers.name + "Rejected.cs"],
             ["events/UpdateRejected.cs", this.answers.name + "s/Messages/Events/Update" + this.answers.name + "Rejected.cs"],
             ["events/DeleteRejected.cs", this.answers.name + "s/Messages/Events/Delete" + this.answers.name + "Rejected.cs"],
         ];
-        if(!this.answers.subdoc)
+        if (!this.answers.subdoc)
             tpls = tpls.concat(notSubDoc);
         if (this.answers.crud)
             tpls = tpls.concat(cruds);
