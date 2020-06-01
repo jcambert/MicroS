@@ -3,9 +3,9 @@
 using AutoMapper;
 using MicroS_Common.Mongo;
 using MicroS_Common.Repository;
-using <%=namespace%>.domain.<%= changeCase.pascalCase(name) %>s.Domain;
-using <%=namespace%>.domain.<%= changeCase.pascalCase(name) %>s.Dto;
-using <%=namespace%>.domain.<%= changeCase.pascalCase(name) %>s.Queries;
+using <%=appname%>.domain.<%= domain %>s.Domain;
+using <%=appname%>.domain.<%= domain %>s.Dto;
+using <%=appname%>.domain.<%= domain %>s.Queries;
 #endregion
 
 /// <summary>
@@ -14,24 +14,24 @@ using <%=namespace%>.domain.<%= changeCase.pascalCase(name) %>s.Queries;
 /// @email: <%=author.email%>
 /// @created_on: <%= new Date()%>
 /// </summary>
-namespace <%=namespace%>.Services.Repositories
+namespace <%=service.name%>.Repositories
 {    
 
     #region interface
     /// <summary>
-    /// <%= changeCase.pascalCase(name) %> Repository for intereaction with database
+    /// <%= pascalDomain %> Repository for intereaction with database
     /// </summary>
-    public interface IBrowse<%= changeCase.pascalCase(name) %>Repository : IBrowseRepository<<%= changeCase.pascalCase(name) %>,Browse<%= changeCase.pascalCase(name) %>s,<%= changeCase.pascalCase(name) %>Dto>{}
+    public interface IBrowse<%= pascalDomain %>Repository : IBrowseRepository<<%= pascalDomain %>,Browse<%= pascalDomain %>s,<%= pascalDomain %>Dto>{}
     #endregion 
 
     #region Implementation
     /// <summary>
-    /// <%= changeCase.pascalCase(name) %> Repository for intereaction with database
+    /// <%= pascalDomain %> Repository for intereaction with database
     /// </summary>
-    [Repository(typeof(IBrowse<%= changeCase.pascalCase(name) %>Repository))]
-    public partial class <%= changeCase.pascalCase(name) %>Repository : BrowseRepository<<%= changeCase.pascalCase(name) %>,Browse<%= changeCase.pascalCase(name) %>s,<%= changeCase.pascalCase(name) %>Dto>,IBrowse<%= changeCase.pascalCase(name) %>Repository 
+    [Repository(typeof(IBrowse<%= pascalDomain %>Repository))]
+    public partial class <%= pascalDomain %>Repository : BrowseRepository<<%= pascalDomain %>,Browse<%= pascalDomain %>s,<%= pascalDomain %>Dto>,IBrowse<%= pascalDomain %>Repository 
     {
-        public <%= changeCase.pascalCase(name) %>Repository(IMongoRepository<<%= changeCase.pascalCase(name) %>> repository, IMapper mapper) : base(repository,mapper){}
+        public <%= pascalDomain %>Repository(IMongoRepository<<%= pascalDomain %>> repository, IMapper mapper) : base(repository,mapper){}
         
     }
     #endregion

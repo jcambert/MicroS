@@ -6,14 +6,14 @@ using System;
 /// @email: <%=author.email%>
 /// @created_on: <%= new Date()%>
 /// </summary>
-namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Messages.Events
+namespace <%=appname%>.domain.<%= domain%>s.Messages.Events
 {
-    public class <%= changeCase.pascalCase(name)%>Deleted:<%= changeCase.pascalCase(name)%>BaseEvent
+    public class <%= pascalDomain%>Deleted:<%= pascalDomain%>BaseEvent
     {
 
         public Guid Id { get; }
 
-        public <%= changeCase.pascalCase(name)%>Deleted(Guid id)
+        public <%= pascalDomain%>Deleted(Guid id)
         {
             Id = id;
         }

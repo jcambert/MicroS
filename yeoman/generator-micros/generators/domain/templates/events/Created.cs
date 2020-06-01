@@ -8,9 +8,9 @@ using System.Collections.Generic;
 /// @email: <%=author.email%>
 /// @created_on: <%= new Date()%>
 /// </summary>
-namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Messages.Events
+namespace <%=appname%>.domain.<%= domain%>s.Messages.Events
 {
-    public class <%= changeCase.pascalCase(name)%>Created : <%= changeCase.pascalCase(name)%>BaseEvent
+    public class <%= pascalDomain%>Created : <%= pascalDomain%>BaseEvent
     {
         public Guid Id { get; }
 
@@ -18,7 +18,7 @@ namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Messages.Even
             %>public <%= property.type%>  <%= changeCase.pascalCase(property.name)%>{get;}
         <%})%>
         <%- props.filter(property=>!property.isprimitive).map(property=>`public List<${property.name}> ${property.name}s;`).join('\n')%>
-        public <%= changeCase.pascalCase(name)%>Created(Guid id,
+        public <%= pascalDomain%>Created(Guid id,
         <%- props.filter(prop=>prop.isprimitive).map(prop=>`${prop.type} ${changeCase.lowerCase(prop.name)}`).concat(props.filter(prop=>!prop.isprimitive).map(prop=>`List<${prop.name}> ${changeCase.lowerCase(prop.name)}s`)).join(',') %>
         )
         {

@@ -6,12 +6,12 @@ using System;
 /// @email: <%=author.email%>
 /// @created_on: <%= new Date()%>
 /// </summary>
-namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Messages.Commands
+namespace <%=appname%>.domain.<%= domain%>s.Messages.Commands
 {
-    public class Update<%= changeCase.pascalCase(name)%> : Create<%= changeCase.pascalCase(name)%>
+    public class Update<%= pascalDomain%> : Create<%= pascalDomain%>
     {
         
-        public Update<%= changeCase.pascalCase(name)%>(<%if(base_entity){%>Guid id,<%}%><%- include('./../../../common/templates/ctor') %>) : base(<%if(base_entity){%>id,<%}%><%- include('./../../../common/templates/ctorbase') %>)
+        public Update<%= pascalDomain%>(<%if(entity){%>Guid id,<%}%><%- include('./../../../common/templates/ctor') %>) : base(<%if(entity){%>id,<%}%><%- include('./../../../common/templates/ctorbase') %>)
         {
         }
     }

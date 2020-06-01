@@ -5,10 +5,10 @@ using MicroS_Common.Messages;
 /// @email: <%=author.email%>
 /// @created_on: <%= new Date()%>
 /// </summary>
-namespace <%=namespace%>.domain.<%=changeCase.pascalCase(name) %>s.Messages.Events
+namespace <%=appname%>.domain.<%=domain %>s.Messages.Events
 {
-    [MessageNamespace("<%=changeCase.lowerCase(name) %>s")]
-    public abstract class <%=changeCase.pascalCase(name) %>BaseEvent:BaseEvent
+    [MessageNamespace("<%=domain %>s")]
+    public abstract class <%= pascalDomain %>BaseEvent:BaseEvent
     {
     }
 }

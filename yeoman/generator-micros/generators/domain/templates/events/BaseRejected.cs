@@ -6,12 +6,12 @@ using System;
 /// @email: <%=author.email%>
 /// @created_on: <%= new Date()%>
 /// </summary>
-namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Messages.Events
+namespace <%=appname%>.domain.<%= domain%>s.Messages.Events
 {
-    [MessageNamespace("<%= changeCase.lowerCase(name)%>s")]
-    public class <%= changeCase.pascalCase(name)%>BaseRejectedEvent : BaseRejectedEvent
+    [MessageNamespace("<%= domain%>s")]
+    public class <%= pascalDomain%>BaseRejectedEvent : BaseRejectedEvent
     {
-        public <%= changeCase.pascalCase(name)%>BaseRejectedEvent(Guid id, string reason, string code) : base(id, reason, code)
+        public <%= pascalDomain%>BaseRejectedEvent(Guid id, string reason, string code) : base(id, reason, code)
         {
         }
     }

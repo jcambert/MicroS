@@ -6,13 +6,13 @@ using MicroS_Common.Messages;
 /// @email: <%=author.email%>
 /// @created_on: <%= new Date()%>
 /// </summary>
-namespace <%=namespace%>.domain.<%=changeCase.pascalCase(name) %>s.Messages.Commands
+namespace <%=appname%>.domain.<%=domain %>s.Messages.Commands
 {
-    [MessageNamespace("<%=changeCase.lowerCase(name) %>s")]
-    public abstract class <%=changeCase.pascalCase(name) %>BaseCommand : BaseCommand
+    [MessageNamespace("<%=domain %>s")]
+    public abstract class <%= pascalDomain %>BaseCommand : BaseCommand
     {
 
-        public <%=changeCase.pascalCase(name) %>BaseCommand() : base()
+        public <%= pascalDomain %>BaseCommand() : base()
         {
         }
     }

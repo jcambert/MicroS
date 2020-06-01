@@ -3,11 +3,13 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using MicroS_Common;
 using MicroS_Common.Types;
 using MicroS_Common.Controllers;
 using MicroS_Common.Dispatchers;
-using <%=namespace%>.domain.<%= changeCase.pascalCase(name) %>s.Dto;
-using <%=namespace%>.domain.<%= changeCase.pascalCase(name) %>s.Queries;
+using <%=appname%>.domain.<%= domain %>s.Dto;
+using <%=appname%>.domain.<%= domain %>s.Queries;
 #endregion
 
 /// <summary>
@@ -16,21 +18,21 @@ using <%=namespace%>.domain.<%= changeCase.pascalCase(name) %>s.Queries;
 /// @email: <%=author.email%>
 /// @created_on: <%= new Date()%>
 /// </summary>
-namespace <%=namespace%>.Services.<%= changeCase.pascalCase(name) %>s.Controllers
+namespace <%= service.name %>.Controllers
 {
-    [Route("<%= changeCase.lowerCase(name) %>s")]
-    public partial class <%= changeCase.pascalCase(name) %>sController : BaseController
+    [Route("<%= domain %>s")]
+    public partial class <%= pascalDomain %>sController : BaseController
     {
-        public <%= changeCase.pascalCase(name) %>sController(IDispatcher dispatcher,IConfiguration config) : base(dispatcher,config)
+        public <%= pascalDomain %>sController(IDispatcher dispatcher,IConfiguration config,IOptions<AppOptions> appOptions) : base(dispatcher,config,appOptions)
         {
         }
 
         [HttpGet("")]
-        public async Task<ActionResult<PagedResult<<%= changeCase.pascalCase(name) %>Dto>>> Get([FromQuery] Browse<%= changeCase.pascalCase(name) %>s query)
+        public async Task<ActionResult<PagedResult<<%= pascalDomain %>Dto>>> Get([FromQuery] Browse<%= pascalDomain %>s query)
             => Collection(await QueryAsync(query));
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<<%= changeCase.pascalCase(name) %>Dto>> Get([FromRoute] Get<%= changeCase.pascalCase(name) %> query)
+        public async Task<ActionResult<<%= pascalDomain %>Dto>> Get([FromRoute] Get<%= pascalDomain %> query)
             => Single(await QueryAsync(query));
         
         

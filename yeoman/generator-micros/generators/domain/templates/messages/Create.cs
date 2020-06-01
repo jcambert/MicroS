@@ -6,12 +6,12 @@ using System;
 /// @email: <%=author.email%>
 /// @created_on: <%= new Date()%>
 /// </summary>
-namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Messages.Commands
+namespace <%=appname%>.domain.<%= domain%>s.Messages.Commands
 {
 
-    public class Create<%= changeCase.pascalCase(name)%> : <%= changeCase.pascalCase(name)%>BaseCommand
+    public class Create<%= pascalDomain%> : <%= pascalDomain%>BaseCommand
     {
-        <%if(base_entity){%>
+        <%if(entity){%>
         public override Guid Id { get; set; }
         <%}%>
         <%-props.filter(prop=>prop.isprimitive).map(prop=>`public ${prop.type} ${changeCase.pascalCase(prop.name)} {get;}`).join('\n') %>
@@ -19,10 +19,10 @@ namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Messages.Comm
 
 
 
-        public Create<%= changeCase.pascalCase(name)%>(
-            <%if(base_entity){%>Guid id,<%}%><%- include('./../../../common/templates/ctor') %>) : base()
+        public Create<%= pascalDomain%>(
+            <%if(entity){%>Guid id,<%}%><%- include('./../../../common/templates/ctor') %>) : base()
         {
-            <%if(base_entity){%>
+            <%if(entity){%>
             Id = id;
             <%}%>
             <%- include('./../../../common/templates/ctorsetprops') %>

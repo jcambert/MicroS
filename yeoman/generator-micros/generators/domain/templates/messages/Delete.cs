@@ -5,18 +5,18 @@ using System;
 /// @email: <%=author.email%>
 /// @created_on: <%= new Date()%>
 /// </summary>
-namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Messages.Commands
+namespace <%=appname%>.domain.<%= domain%>s.Messages.Commands
 {
-    public class Delete<%= changeCase.pascalCase(name)%>: <%= changeCase.pascalCase(name)%>BaseCommand
+    public class Delete<%= pascalDomain%>: <%= pascalDomain%>BaseCommand
     {
-        <%if(base_entity){%>
+        <%if(entity){%>
         public override Guid Id { get; set; }
-        public Delete<%= changeCase.pascalCase(name)%>(Guid id) : base()
+        public Delete<%= pascalDomain%>(Guid id) : base()
         {
             this.Id = id;
         }
         <%}else{%>
-         public Delete<%= changeCase.pascalCase(name)%>() : base(){
+         public Delete<%= pascalDomain%>() : base(){
              //TODO SET AN ID HERE
          }
         <%}%>

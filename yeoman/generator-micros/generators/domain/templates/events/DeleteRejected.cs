@@ -5,11 +5,11 @@ using System;
 /// @email: <%=author.email%>
 /// @created_on: <%= new Date()%>
 /// </summary>
-namespace <%=namespace%>.domain.<%= changeCase.pascalCase(name)%>s.Messages.Events
+namespace <%=appname%>.domain.<%= domain%>s.Messages.Events
 {
-    public class Delete<%= changeCase.pascalCase(name)%>Rejected : <%= changeCase.pascalCase(name)%>BaseRejectedEvent
+    public class Delete<%= pascalDomain%>Rejected : <%= pascalDomain%>BaseRejectedEvent
     {
-        public Delete<%= changeCase.pascalCase(name)%>Rejected(Guid id, string reason, string code) : base(id, reason, code)
+        public Delete<%= pascalDomain%>Rejected(Guid id, string reason, string code) : base(id, reason, code)
         {
         }
     }
