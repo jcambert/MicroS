@@ -3,6 +3,7 @@ using MicroS_Common.Handlers;
 using MicroS_Common.RabbitMq;
 using MicroS_Common.Repository;
 using MicroS_Common.Types;
+using System;
 using System.Threading.Tasks;
 using <%=appname%>.domain.<%= domain %>s.Domain;
 using <%=appname%>.domain.<%= domain %>s.Messages.Commands;
@@ -36,12 +37,13 @@ namespace <%=service.name%>.Handlers
         /// </summary>
         /// <param name="command">The command in wich information can be use do check if the model exist in database</param>
         /// <returns>Nothing</returns>
-        protected override async Task CheckExist(<%= pascalDomain %> domain)
+        protected override async Task<bool> CheckExist(Guid id)
         {
-            if (!await Repository.ExistsAsync(domain.Id))
+            if (!await base.CheckExist(id))
             {
-                throw new MicroSException("<%= domain %>_not_found",$"<%= pascalDomain %> with id: '{domain.Id}' was not found.");
+                throw new MicroSException("<%= domain %>_not_found",$"<%= pascalDomain %> with id: '{id}' was not found.");
             }
+            return true;
         }
         #endregion
         #region Public Overrides functions

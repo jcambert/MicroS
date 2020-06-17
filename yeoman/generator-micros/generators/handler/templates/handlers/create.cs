@@ -3,6 +3,7 @@ using MicroS_Common.Handlers;
 using MicroS_Common.RabbitMq;
 using MicroS_Common.Types;
 using MicroS_Common.Mongo;
+using System;
 using System.Threading.Tasks;
 using <%=appname%>.domain.<%= domain %>s.Domain;
 using <%=appname%>.domain.<%= domain %>s.Messages.Commands;
@@ -37,13 +38,13 @@ namespace <%=service.name%>.Handlers
         /// </summary>
         /// <param name="command">The command in wich information can be use do check if the model exist in database</param>
         /// <returns>Nothing</returns>
-        protected override async Task CheckExist(<%= pascalDomain %> domain)
+        protected override async Task<bool> CheckExist(Guid id)
         {
-            if (await Repository.ExistsAsync(domain.Id))
+            if (await base.CheckExist(id))
             {
-                throw new MicroSException("<%= domain %>_already_exists",$"<%= pascalDomain %>: '{domain.Id}' already exists.");
+                throw new MicroSException("<%= domain %>_already_exists",$"<%= pascalDomain %>: '{id}' already exists.");
             }
-           
+           return true;
         }
         #endregion
 
