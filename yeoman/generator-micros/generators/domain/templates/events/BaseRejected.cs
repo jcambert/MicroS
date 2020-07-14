@@ -8,7 +8,7 @@ using System;
 /// </summary>
 namespace <%=appname%>.domain.<%= domain%>s.Messages.Events
 {
-    [MessageNamespace("<%= domain%>s")]
+    [MessageNamespace("<%= appname%>")]
     public class <%= pascalDomain%>BaseRejectedEvent : BaseRejectedEvent
     {
         public <%= pascalDomain%>BaseRejectedEvent(Guid id, string reason, string code) : base(id, reason, code)

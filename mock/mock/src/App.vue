@@ -4,34 +4,46 @@
     <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
     <langSelector v-model="lang"></langSelector>
     <themeSelector v-model="theme"></themeSelector>
-    <tpl :theme="theme" :lang="lang"></tpl>
+    <tpl id="template" :theme="theme" lang="json" v-model="content"></tpl>
+    <tpl id="render" :theme="theme" lang="json" v-model="render"></tpl>
+    <pre>{{lang}} - {{theme}}</pre>
+    <p>&nbsp;</p>
   </div>
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld.vue'
-import tpl from './components/Template'
-import langSelector from './components/LangSelector'
-import themeSelector from './components/ThemeSelector'
+import tpl from "./components/Template"
+import langSelector from "./components/LangSelector"
+import themeSelector from "./components/ThemeSelector"
+import datas from './assets/datas/index' 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    //HelloWorld,
     tpl,
     langSelector,
     themeSelector
   },
-  data:function(){
-    return{
-      lang:String,
-      theme:String
+  data: function() {
+    return {
+      lang: "",
+      theme: "",
+      content:"",
+      render:""
+    };
+  },
+  watch:{
+    content:function(newContent){
+      console.log("Template has changed to ",newContent,typeof newContent);
+     // console.log(JSON.parse(newContent));
+      this.render=JSON.stringify( window.wemock.render(JSON.parse(newContent))) ;
     }
   },
-  mounted:function () {
-    this.theme="";
-    this.lang="csharp"
+  mounted(){
+    console.log(datas)
+    window.wemock.datas=datas;
+    
   }
-}
+};
 </script>
 
 <style>

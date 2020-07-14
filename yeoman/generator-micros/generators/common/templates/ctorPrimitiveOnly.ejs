@@ -1,3 +1,1 @@
-<%-
-props.filter(prop=>prop.isprimitive).map(prop=>`${prop.type} ${changeCase.lowerCase( prop.name)}`).join(',');
-%>
+<%-props.filter(prop=>prop.isprimitive).map(prop=> prop.dynamic? `Property<${prop.type}> ${changeCase.lowerCase( prop.name)}`: `${prop.type} ${changeCase.lowerCase( prop.name)}`).join(',');%>

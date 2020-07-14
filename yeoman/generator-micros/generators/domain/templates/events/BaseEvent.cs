@@ -7,7 +7,7 @@ using MicroS_Common.Messages;
 /// </summary>
 namespace <%=appname%>.domain.<%=domain %>s.Messages.Events
 {
-    [MessageNamespace("<%=domain %>s")]
+    [MessageNamespace("<%=appname %>")]
     public abstract class <%= pascalDomain %>BaseEvent:BaseEvent
     {
     }

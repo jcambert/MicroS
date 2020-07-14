@@ -40,7 +40,7 @@ module.exports = class extends Generator {
         //this.log("Domain writing");
         
         const options=Object.assign({},{pascalDomain:changeCase.pascalCase(self.config.get('answers').domain)},self.config.get('answers'),{author:self.config.get('author'),changeCase:changeCase});
-
+       // self.log(options);return;
         var domainPath=self.config.get('domain').path;
 
         var tpls = [
@@ -75,10 +75,4 @@ module.exports = class extends Generator {
         });
 
     }
-
-  /*  end() {
-        if (this.options.namespace == this.namespace)
-            this.micros.clear();
-    }*/
-
 }

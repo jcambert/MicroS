@@ -1,7 +1,9 @@
+using MicroS_Common.Controllers;
 using MicroS_Common.Mvc;
 using MicroS_Common.RabbitMq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OpenTracing;
 using System;
@@ -27,13 +29,15 @@ namespace <%=appname%>.api.Controllers
     [Route("<%= domain %>s")]
     public partial class <%= pascalDomain %>sController : BaseController
     {
-        #region private varaibles
+        #region private variables
         private readonly I<%= pascalDomain %>sService _<%= domain %>sService;
         private readonly ILogger<Create<%= pascalDomain %>> _logger;
         #endregion
 
         #region constructors
-        public <%= pascalDomain %>sController(IBusPublisher busPublisher, ITracer tracer,
+        public <%= pascalDomain %>sController(
+            IBusPublisher busPublisher, 
+            ITracer tracer,
             I<%= pascalDomain %>sService <%= domain %>sService,ILogger<Create<%= pascalDomain %>>logger) : base(busPublisher, tracer)
         {
             _<%= domain %>sService = <%= domain %>sService;

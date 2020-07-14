@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 <template>
-  <div id="container">
-    <h1>MY EDITOR</h1>
-    <div id="editor"></div>
+  <div class="container">
+    <div :id="id" :name="id" class="editor"></div>
   </div>
 </template>
 
@@ -12,18 +11,19 @@ export default {
   components: {},
   props: {
     value: String,
-    //lang: String,
-    //theme: String,
+    lang: String,
+    theme: String,
     height: Number,
     width: Number,
-    options: Object
+    options: Object,
+    id: { type: String, required: true }
   },
   data: function() {
     return {
       editor: null,
-      contentBackup: "",
-      lang:"",
-      theme:""
+      contentBackup: ""
+      //lang:"",
+      //theme:""
     };
   },
   watch: {
@@ -37,7 +37,6 @@ export default {
       this.setTheme(newTheme);
     },
     lang: function(newLang) {
-        
       this.setLang(newLang);
     },
     options: function(newOption) {
@@ -55,32 +54,48 @@ export default {
     }
   },
   methods: {
-    px: function(n) {
+    px(n) {
       if (/^\d*$/.test(n)) {
         return n + "px";
       }
       return n;
     },
-    setTheme: function(theme) {
+    setTheme(theme) {
       require(`brace/theme/${theme}`);
       this.editor.setTheme(`ace/theme/${theme}`);
     },
-    setLang: function(lang) {
-        console.log("Set Lang",lang)
-        lang=lang ||"json";
+    setLang(lang) {
+      console.log("Set Lang", lang);
+      require(`brace/mode/${lang}`);
+      lang = lang || "json";
       this.editor
         .getSession()
-        .setMode(typeof lang === "string" ? `brace/mode/${lang}` : lang);
+        .setMode(typeof lang === "string" ? `ace/mode/${lang}` : lang);
+    },
+    onResize() {
+      var session = this.editor.session;
+
+      this.editor.resize();
+      if (session.getUseWrapMode()) {
+        var characterWidth = this.editor.renderer.characterWidth;
+        var contentWidth = this.editor.container.ownerDocument.getElementsByClassName(
+          "ace_scroller"
+        )[0].clientWidth;
+
+        if (contentWidth > 0) {
+          session.setWrapLimit(parseInt(contentWidth / characterWidth, 10));
+        }
+      }
     }
   },
   mounted: function() {
     var self = this;
-    var lang = this.lang || "json";
+    var lang = this.lang || "html";
     var theme = this.theme || "cobalt";
     require("brace/ext/emmet");
     //require(`brace/theme/${theme}`);
-    var editor = (self.editor = ace.edit("editor"));
-    editor.$blockScrolling = Infinity;
+    var editor = (self.editor = ace.edit(this.id));
+    //editor.$blockScrolling = Infinity;
     self.$emit("init", editor);
     //editor
     //  .getSession()
@@ -96,7 +111,25 @@ export default {
       self.$emit("input", content);
       self.contentBackup = content;
     });
-    if (self.options) editor.setOptions(self.options);
+
+    editor.setOptions(
+      Object.assign(
+        {},
+        {
+          selectionStyle: 'line',// "line"|"text"
+          maxLines: Infinity, // this is going to be very slow on large documents
+          wrap: true, // wrap text to view
+          indentedSoftWrap: true,
+          behavioursEnabled: false, // disable autopairing of brackets and tags
+          showLineNumbers: true, // hide the gutter
+          fontSize:16
+        },
+        self.options
+      )
+    );
+
+    window.onresize= this.onResize()  ;
+    this.onResize();
   },
   beforeDestroy: function() {
     this.editor.destroy();
@@ -122,7 +155,7 @@ body {
   width: 100%;
   height: 100%;
 }
-#container {
+.container {
   height: 100%;
   width: auto;
   white-space: nowrap;
@@ -130,10 +163,10 @@ body {
   position: relative;
   background-color: blue;
 }
-#editor {
+.editor {
   height: 100%;
   min-height: 50vh;
-  width: 33%;
+  width: 90%;
   display: inline-block;
 }
 </style>

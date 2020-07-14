@@ -33,7 +33,8 @@ module.exports = class extends Generator {
         var apiPath=self.config.get('api').path;
         var tpls = [
             ["AuthAdminAttribue.cs","Framework/AdminAuth.cs"],
-            ["ApiController.cs", "Controllers/{0}}sControllerGen.cs"],
+            ["BaseController.cs","Controllers/BaseControllerGen.cs"],
+            ["ApiController.cs", "Controllers/{0}sControllerGen.cs"],
 
             ["IApiService.cs", "Services/I{0}sServiceGen.cs"]
         ];

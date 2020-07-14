@@ -1,8 +1,5 @@
-using System;
-<%if(mongo){%>
-using MicroS_Common.Mongo;
-using MongoDB.Bson.Serialization.Attributes;
-<%}%>
+using System;<%if(mongo){%>
+using MicroS_Common.Mongo;<%}%>
 <%- include('./../../common/templates/using') %>
 <%if(entity){%>using MicroS_Common.Types;<%}%>
 

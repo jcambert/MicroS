@@ -1,5 +1,5 @@
 <template>
-  <select id="themeselector" v-model="value" class="theme-selector" v-on:change="$emit('input',$event.target.value)">
+  <select id="themeselector" v-model="current" class="theme-selector" v-on:change="$emit('input',$event.target.value)">
     <option
       v-for="(_theme,index) in themes"
       :key="index"
@@ -12,11 +12,13 @@
 import ace from "brace";
 import "brace/ext/themelist";
 export default {
-  props: [],
+  props: {
+    value:String
+
+  },
   data: function() {
     return {
-      value:String,
-      currentTheme: String,
+      current:this.value,
       themes: []
     };
   },
@@ -24,10 +26,10 @@ export default {
   },
   computed: {},
   watch: {
-    value: function(newTheme) {
+   /* value: function(newTheme) {
       console.dir(newTheme);
       this.$emit("ace-theme", newTheme);
-    }
+    }*/
   },
   mounted: function() {
     var v = ace.acequire("ace/ext/themelist");

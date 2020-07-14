@@ -5,8 +5,10 @@ const path = require('path');
 const changeCase = require('change-case');
 var infos = require( "../../info");
 var create_paths = function (pathname) {
+    console.log(pathname);
     return { name: pathname.split('/').pop().replace(".csproj", ""), path: path.dirname(pathname), project: pathname };
 }
+
 if (!String.format) {
     String.prototype.format = function() {
         
@@ -21,14 +23,15 @@ if (!String.format) {
   }
 module.exports = class {
     constructor(generator,namespace) {
+        //console.log("namespace:"+namespace);
         this.generator = generator;
         this.namespace=namespace;
         this.config = generator.config;
         this.log = generator.log;
         this.options=generator.options;
         this.generator.env.adapter.promptModule.registerPrompt("search-list", require("inquirer-search-list"));
-        this.primitiveTypes = ["string", "bool", "byte", "sbyte", "char", "decimal", "double", "float", "int", "uint", "long", "ulong", "short", "ushort", "object", "other"];
-
+        this.primitiveTypes = ["string", "bool", "byte", "sbyte", "char","DateTime", "decimal", "double", "float", "int", "uint", "long", "ulong", "short", "ushort", "object", "other"];
+        this.supportedDynamicType=["string","int","double","DateTime","bool"];
         if (this.options.namespace == this.namespace)
             this.clear();
         var availables=this.config.get('availables') || [];
@@ -36,15 +39,28 @@ module.exports = class {
         this.config.set('availables', availables);
         this.config.set('answers',this.config.get('answers') || {});
     }
+    throwIfUndefined(value,msg){
+        if(value==undefined){
+            this.log(chalk.red("There is no api project => Aborting"));
+            throw "There is no api project => Aborting";
+        }
+    }
     async initializing() {
         if (this.config.get("micros")) return;
         var info = await infos();
         var files = await glob("**/*.csproj", { cwd: process.cwd() });
-        //self.log(files);
+       
+        //Search Api Project
         var api_file = files.filter(file => file.match(/api/i))[0];
+        this.throwIfUndefined(api_file,"There is no api project => Aborting");
         var api = create_paths(api_file);
+
+        //Search Domain Project
         var domain_file = files.filter(file => file.match(/domain/i))[0];
         var domain = create_paths(domain_file);
+        this.throwIfUndefined(domain,"There is no domain project => Aborting");
+
+        //Search Services Projects
         var services_files = files.filter(file => file.match(/services/i));
         var services = services_files.map(create_paths);
         this.config.set(Object.assign({ micros: true , api: api , domain: domain , services: services,author:info.author}));
@@ -56,6 +72,7 @@ module.exports = class {
         ['micros','answers', 'promptValues'].forEach(key => this.config.delete(key));
     }
     prompt() {
+       // console.log(arguments);
         return this.generator
             .prompt
             .apply(this.generator, arguments);
@@ -70,28 +87,31 @@ module.exports = class {
 
     async askLoop(prompts,name,callback){
         var self=this;
+        var _prompts=prompts.slice();
         //self.log(arguments);
-        self.loopResponses=[];
-        prompts.push({
+        var loopResponses=[];
+        _prompts.push({
             type: 'confirm',
             name: 'repeat',
             message: 'Do you want to add more?',
             default: 'Y'
         });
-      //  self.log(prompts);
+        //self.log("** PROMPTS **");
+        //self.log(_prompts);
         const loop = async (relevantPrompts) => {
-            var resp = await self.prompt(relevantPrompts);
-            self.loopResponses.push(callback(resp));
-            //self.log(self.loopResponses);
+            var resp = await this.generator.prompt(relevantPrompts);
+            loopResponses.push(callback(resp));
+            self.log("** RESP **");
+            self.log(resp);
             //self.log(chalk.green(self.props));
             if (resp.repeat)
-                await loop(prompts);
+                await loop(_prompts);
         }
-        await loop(prompts);
+        await loop(_prompts);
         var answers = Object.assign({}, self.config.get('answers'));
-        answers[name]=self.loopResponses;
+        answers[name]=loopResponses.slice();
         self.config.set('answers',answers);
-        self.loopResponses=[];
+        loopResponses=[];
     }
 
     writing(from, to,opts) {
@@ -136,6 +156,8 @@ module.exports = class {
         ]);
     }
 
+   // CamelCaseTransformer(input){return changeCase.camelCase(input)}
+
     async askForDomain(complete=true){
         const self=this;
         var prompts=[
@@ -144,8 +166,8 @@ module.exports = class {
                 name: "domain",
                 message: "Domain Name:",
                 validate: input=>input.trim().length>0,
-                filter: input => changeCase.lowerCase(input).replace(/[s]*$/i, ''),
-                transformer: input => changeCase.lowerCase(input).replace(/[s]*$/i, ''),
+                filter: input => changeCase.camelCase(input).replace(/[s]*$/i, ''),
+                transformer: input => changeCase.camelCase(input).replace(/[s]*$/i, ''),
                 store:true
               }
             
@@ -181,25 +203,33 @@ module.exports = class {
     }
     async askForDomainProperties(){
         const self=this;
-        var columnPrompts = [{
+        var columnPrompts = [
+            {
             type: 'input',
             name: 'attributeName',
             message: 'Define your Domain - Property Name?',
-            default:"",
-            filter: input => changeCase.pascalCase(input.trim()),
+            validate: input =>(input.trim().length>0  )? true: `the property ${input} must not be empty or is already defined`,
             transformer: input => changeCase.pascalCase(input.trim()),
-            validate: input =>(input.trim().length>0 /*&& self.loopResponses.filter(prop => changeCase.lowerCase( prop.name) == changeCase.lowerCase( input)).some(e => true)*/ )? true: `the property ${input} must not be empty or is already defined` //&&  self.loopResponses.filter(prop => prop.name == input).some(e => true) ? `the property ${input} must not be empty or is already defined` : true
-        }, {
+            filter: input => changeCase.pascalCase(input.trim())
+        },{
             type: 'search-list',
             choices: self.primitiveTypes,
             name: 'attributeType',
             message: 'Define your Domain - Property Type?',
             default: 'string',
 
+        },{
+            type: "confirm",
+            name:'attributeDynamic',
+            message: 'Define your Domain - Is Dynamic Property ?',
+            default:false,
+            when:function(answer){
+                return self.supportedDynamicType.indexOf(answer.attributeType)>=0;
+            }
         },
         {
             type: 'input',
-            name: 'attributeType',
+            name: 'namespace',
             message: 'What is the namespace for this child',
             default: function (answer) {
                 return changeCase.pascalCase(answer.attributeName) + "s";
@@ -211,6 +241,6 @@ module.exports = class {
             filter: input => changeCase.pascalCase(input)
         }];
 
-        await this.askLoop(columnPrompts,"props",resp=>{ return { name: resp.attributeName, type: resp.attributeType, isprimitive: resp.isprimitive }});
+        await this.askLoop(columnPrompts,"props",resp=>{ return { name: resp.attributeName, type: resp.attributeType, isprimitive: resp.isprimitive,dynamic:resp.attributeDynamic,namespace:resp.namespace }});
     }
 }

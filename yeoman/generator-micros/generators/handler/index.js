@@ -1,10 +1,6 @@
 const Generator = require("yeoman-generator");
 var changeCase = require('change-case');
 const path = require('path');
-//var glob = require("glob");
-/*var glob = require("glob-promise");
-const chalk = require("chalk");
-var info = require("../../info");*/
 const micros = require("./../common/common");
 module.exports = class extends Generator {
     constructor(args, opt) {
@@ -25,21 +21,6 @@ module.exports = class extends Generator {
         await self.micros.askForServiceName();
         await self.micros.askForDomain(false);
     }
-
-   /* _writing(from, to) {
-        this.fs.copyTpl(
-            this.templatePath(from),
-            this.destinationPath(to.replace(" ", "")),
-            {
-                changeCase: changeCase,
-                name: this.answers.name,
-                props: this.props,
-                namespace: this.namespace,
-                base_entity: this.answers.entity,
-                author: this.info.author
-            }
-        );
-    }*/
 
     writing() {
         var self = this;
@@ -68,8 +49,4 @@ module.exports = class extends Generator {
         });
     }
     end(){}
-    /*end() {
-        if (this.options.namespace == this.namespace)
-            this.micros.clear();
-    }*/
 }

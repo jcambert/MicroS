@@ -1,4 +1,6 @@
 <% if(props.filter(prop=>!prop.isprimitive).some(e=>true)){%>
 using System.Collections.Generic;
-<%- props.filter(prop=>!prop.isprimitive).map(prop=>`using ${namespace}.domain.${changeCase.pascalCase(prop.name)}s.Domain;`).join('\n')%>
-<%}%>
+<%- props.filter(prop=>!prop.isprimitive).map(prop=>`using ${appname}.domain.${changeCase.pascalCase(prop.name)}s.Domain;`).join('\n')%><%}%>
+<% if(props.filter(prop=>prop.dynamic).some(e=>true)){%>
+using WeCommon;<%}%><% if(props.filter(prop=>prop.dynamic).some(e=>true) && mongo){%>
+using MongoDB.Bson.Serialization.Attributes;<%}%>
